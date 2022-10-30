@@ -21,8 +21,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		transactions := api.Group("/transactions")
 		{
 			transactions.POST("/upload", h.uploadTransactions)
-			transactions.GET("/", h.getAllTransactions)
-			transactions.GET("/:id", h.getTransactionById)
+			transactions.GET("/", h.getTransactions)
 		}
 	}
 

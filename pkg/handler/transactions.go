@@ -46,12 +46,12 @@ func (h *Handler) uploadTransactions(c *gin.Context) {
 	})
 }
 
-func (h *Handler) getTransactions(c *gin.Context) {
-	transactionId, ok := c.GetQuery("transaction_id")
+func (h *Handler) getTransactions(c *gin.Context) { // filtering handler
+	transactionIdParam, ok := c.GetQuery("transaction_id")
 	if ok {
-		transactionId, err := strconv.Atoi(transactionId)
+		transactionId, err := strconv.Atoi(transactionIdParam)
 		if err != nil {
-			newErrorResponse(c, http.StatusInternalServerError, err.Error())
+			newErrorResponse(c, http.StatusBadRequest, "TransactionId should be the number.")
 			return
 		}
 
@@ -62,7 +62,6 @@ func (h *Handler) getTransactions(c *gin.Context) {
 		}
 
 		c.JSON(http.StatusOK, transaction)
-
 	}
 
 	terminalIdQueryParams, ok := c.GetQueryArray("terminal_id")
@@ -72,7 +71,8 @@ func (h *Handler) getTransactions(c *gin.Context) {
 		for index, terminalId := range terminalIdQueryParams {
 			terminalId, err := strconv.Atoi(terminalId)
 			if err != nil {
-				newErrorResponse(c, http.StatusInternalServerError, err.Error())
+				newErrorResponse(c, http.StatusInternalServerError,
+					"TransactionId should be the number.")
 				return
 			}
 
@@ -86,11 +86,52 @@ func (h *Handler) getTransactions(c *gin.Context) {
 		}
 
 		c.JSON(http.StatusOK, transactions)
-
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "NICE",
-	})
+	statusParam, ok := c.GetQuery("status")
+	if ok {
+		transactions, err := h.services.Transactions.GetByStatus(statusParam)
+		if err != nil {
+			newErrorResponse(c, http.StatusInternalServerError, err.Error())
+			return
+		}
 
+		c.JSON(http.StatusOK, transactions)
+	}
+
+	paymentTypeParam, ok := c.GetQuery("payment_type")
+	if ok {
+		transactions, err := h.services.Transactions.GetByPaymentType(paymentTypeParam)
+		if err != nil {
+			newErrorResponse(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		c.JSON(http.StatusOK, transactions)
+	}
+
+
+	fromDateParam, fromIs := c.GetQuery("from")
+	toDateParam, toIs := c.GetQuery("to")
+
+	if fromIs && toIs {
+		transactions, err := h.services.GetByDatePeriod(fromDateParam, toDateParam)
+		if err != nil {
+			newErrorResponse(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		c.JSON(http.StatusOK, transactions)
+	}
+
+	paymentNarrativeParam, ok := c.GetQuery("payment_narrative")
+	if ok {
+		transactions, err := h.services.GetByPaymentNarrative(paymentNarrativeParam)
+		if err != nil {
+			newErrorResponse(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		c.JSON(http.StatusOK, transactions)
+	}
 }

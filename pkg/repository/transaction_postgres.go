@@ -67,3 +67,57 @@ func (r *TransactionPostgres) GetByTerminalId(terminalId int) (test_task.Transac
 
 	return transaction, err
 }
+
+func (r *TransactionPostgres) GetByStatus(statusParam string) ([]test_task.Transaction, error) {
+	var transactionList []test_task.Transaction
+	query := fmt.Sprintf("SELECT transaction_id, request_id, terminal_id, partner_object_id, " +
+		"amount_total, amount_original, commision_ps, commission_client, commission_provider, date_input, " +
+		"date_post, status, payment_type, payment_number, service_id, service, payee_id, payee_name, " +
+		"payee_bank_mfo, payee_bank_account, payment_narrative FROM %s WHERE status=$1",
+		transactionsTable)
+
+	err := r.db.Select(&transactionList, query, statusParam)
+
+	return transactionList, err
+}
+
+func (r *TransactionPostgres) GetByPaymentType(paymentTypeParam string) ([]test_task.Transaction, error) {
+	var transactionList []test_task.Transaction
+	query := fmt.Sprintf("SELECT transaction_id, request_id, terminal_id, partner_object_id, " +
+		"amount_total, amount_original, commision_ps, commission_client, commission_provider, date_input, " +
+		"date_post, status, payment_type, payment_number, service_id, service, payee_id, payee_name, " +
+		"payee_bank_mfo, payee_bank_account, payment_narrative FROM %s WHERE payment_type=$1",
+		transactionsTable)
+
+	err := r.db.Select(&transactionList, query, paymentTypeParam)
+
+	return transactionList, err
+}
+
+func (r *TransactionPostgres) GetByDatePeriod(fromDateParam, toDateParam string) ([]test_task.Transaction, error) {
+	var transactionList []test_task.Transaction
+	query := fmt.Sprintf("SELECT transaction_id, request_id, terminal_id, partner_object_id, " +
+		"amount_total, amount_original, commision_ps, commission_client, commission_provider, date_input, " +
+		"date_post, status, payment_type, payment_number, service_id, service, payee_id, payee_name, " +
+		"payee_bank_mfo, payee_bank_account, payment_narrative FROM %s " +
+		"WHERE date_input > $1 AND date_input < $2",
+		transactionsTable)
+
+	err := r.db.Select(&transactionList, query, fromDateParam, toDateParam)
+
+	return transactionList, err
+}
+
+func (r *TransactionPostgres) GetByPaymentNarrative(paymentNarrativeParam string) ([]test_task.Transaction, error) {
+	var transactionList []test_task.Transaction
+	query := fmt.Sprintf("SELECT transaction_id, request_id, terminal_id, partner_object_id, " +
+		"amount_total, amount_original, commision_ps, commission_client, commission_provider, date_input, " +
+		"date_post, status, payment_type, payment_number, service_id, service, payee_id, payee_name, " +
+		"payee_bank_mfo, payee_bank_account, payment_narrative FROM %s WHERE payment_narrative LIKE $1",
+		transactionsTable)
+
+	searchParam := "%" + paymentNarrativeParam + "%"
+	err := r.db.Select(&transactionList, query, searchParam)
+
+	return transactionList, err
+}

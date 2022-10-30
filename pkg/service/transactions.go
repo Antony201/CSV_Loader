@@ -41,6 +41,21 @@ func (s *TransactionsService) GetByTerminalIds(terminalIdParams []int) ([]test_t
 
 		resultTransactions = append(resultTransactions, transaction)
 	}
-
 	return resultTransactions, nil
+}
+
+func (s *TransactionsService) GetByStatus(statusParam string) ([]test_task.Transaction, error) {
+	return s.repo.GetByStatus(statusParam)
+}
+
+func (s *TransactionsService) GetByPaymentType(paymentTypeParam string) ([]test_task.Transaction, error) {
+	return s.repo.GetByPaymentType(paymentTypeParam)
+}
+
+func (s *TransactionsService) GetByDatePeriod(fromDateParam, toDateParam string) ([]test_task.Transaction, error) {
+	return s.repo.GetByDatePeriod(fromDateParam, toDateParam)
+}
+
+func (s *TransactionsService) GetByPaymentNarrative(paymentNarrativeParam string) ([]test_task.Transaction, error) {
+	return s.repo.GetByPaymentNarrative(paymentNarrativeParam)
 }

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
@@ -23,7 +22,6 @@ func main() {
 		logrus.Fatalf("error initializing envs: %s", err.Error())
 	}
 
-	fmt.Println(os.Getenv("DB_PASSWORD"))
 	db, err := repository.NewPostgresDB(repository.Config{
 		Host: viper.GetString("db.host"),
 		Port: viper.GetString("db.port"),

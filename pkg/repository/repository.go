@@ -1,20 +1,21 @@
 package repository
 
-import "github.com/jmoiron/sqlx"
+import (
+	"github.com/jmoiron/sqlx"
+	"test_task"
+)
 
-type TransactionList interface {
-
-}
-
-type TransactionItem interface {
-
+type Transaction interface {
+	Create(transaction test_task.Transaction) (int, error)
+	GetById(transactionId int) (test_task.Transaction, error)
 }
 
 type Repository struct {
-	TransactionList
-	TransactionItem
+	Transaction
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
-	return &Repository{}
+	return &Repository{
+		Transaction: NewTransaction(db),
+	}
 }

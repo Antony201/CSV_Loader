@@ -7,9 +7,9 @@ CREATE TABLE transactions
     partner_object_id   int not null,
     amount_total        int not null,
     amount_original     int not null,
-    commision_ps        numeric(3, 2) not null,
+    commision_ps        numeric(6, 2) not null,
     commission_client   int not null,
-    commission_provider numeric(3, 2) not null,
+    commission_provider numeric(6, 2) not null,
     date_input          timestamp not null,
     date_post           timestamp not null,
     status              varchar(9) not null,
@@ -21,5 +21,5 @@ CREATE TABLE transactions
     payee_name          varchar(12) not null,
     payee_bank_mfo      int not null unique,
     payee_bank_account  varchar(29) not null,
-    payment_narrative   varchar(75) not null
+    payment_narrative   varchar(125) not null
 )

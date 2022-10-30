@@ -53,3 +53,17 @@ func (r *TransactionPostgres) GetById(transactionId int) (test_task.Transaction,
 
 	return transaction, err
 }
+
+func (r *TransactionPostgres) GetByTerminalId(terminalId int) (test_task.Transaction, error) {
+	var transaction test_task.Transaction
+
+	query := fmt.Sprintf("SELECT transaction_id, request_id, terminal_id, partner_object_id, " +
+		"amount_total, amount_original, commision_ps, commission_client, commission_provider, date_input, " +
+		"date_post, status, payment_type, payment_number, service_id, service, payee_id, payee_name, " +
+		"payee_bank_mfo, payee_bank_account, payment_narrative FROM %s WHERE terminal_id=$1",
+		transactionsTable)
+
+	err := r.db.Get(&transaction, query, terminalId)
+
+	return transaction, err
+}

@@ -47,8 +47,6 @@ func (h *Handler) uploadTransactions(c *gin.Context) {
 }
 
 func (h *Handler) getTransactions(c *gin.Context) {
-	var resultTransaction test_task.Transaction
-
 	transactionId, ok := c.GetQuery("transaction_id")
 	if ok {
 		transactionId, err := strconv.Atoi(transactionId)
@@ -65,11 +63,34 @@ func (h *Handler) getTransactions(c *gin.Context) {
 
 		c.JSON(http.StatusOK, transaction)
 
-	} else {
-		fmt.Println(resultTransaction)
-
-		c.JSON(http.StatusOK, map[string]interface{}{
-			"message": "NICE",
-		})
 	}
+
+	terminalIdQueryParams, ok := c.GetQueryArray("terminal_id")
+	if ok {
+		terminalIdParams:= make([]int, len(terminalIdQueryParams))
+
+		for index, terminalId := range terminalIdQueryParams {
+			terminalId, err := strconv.Atoi(terminalId)
+			if err != nil {
+				newErrorResponse(c, http.StatusInternalServerError, err.Error())
+				return
+			}
+
+			terminalIdParams[index] = terminalId
+		}
+
+		transactions, err := h.services.Transactions.GetByTerminalIds(terminalIdParams)
+		if err != nil {
+			newErrorResponse(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		c.JSON(http.StatusOK, transactions)
+
+	}
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "NICE",
+	})
+
 }

@@ -22,9 +22,25 @@ func (s *TransactionsService) Create(transactions []test_task.Transaction) (int,
 			return 0, err
 		}
 	}
+
 	return len(transactions), nil
 }
 
 func (s *TransactionsService) GetByTransactionId(transactionId int) (test_task.Transaction, error) {
 	return s.repo.GetById(transactionId)
+}
+
+func (s *TransactionsService) GetByTerminalIds(terminalIdParams []int) ([]test_task.Transaction, error) {
+	resultTransactions := make([]test_task.Transaction, 0)
+
+	for _, terminalId := range terminalIdParams {
+		transaction, err := s.repo.GetByTerminalId(terminalId)
+		if err != nil {
+			continue
+		}
+
+		resultTransactions = append(resultTransactions, transaction)
+	}
+
+	return resultTransactions, nil
 }

@@ -7,9 +7,14 @@ import (
 
 
 type Transactions interface {
-	Create(transactions []test_task.Transaction) (int, error) // sending transaction id and error(maybe)
-	GetByTransactionId(transactionId int) (test_task.Transaction, error)
+	Create(transactions []test_task.Transaction) (int, error)
 
+	GetByTransactionId(transactionId int) (test_task.Transaction, error)
+	GetByTerminalIds(terminalIdParams []int) ([]test_task.Transaction, error)
+	GetByStatus(statusParam string) ([]test_task.Transaction, error)
+	GetByPaymentType(paymentTypeParam string) ([]test_task.Transaction, error)
+	GetByDatePeriod(fromDateParam, toDateParam string) ([]test_task.Transaction, error)
+	GetByPaymentNarrative(paymentNarrativeParam string) ([]test_task.Transaction, error)
 }
 
 

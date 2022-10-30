@@ -7,11 +7,22 @@ import (
 	"net/http"
 	"strconv"
 	"test_task"
-	//"os"
-	//"path/filepath"
 )
 
 
+
+// @Summary Upload Transactions
+// @Tags Transactions
+// @Description Upload Transactions file to save to db.
+// @ID uploadTransactions
+// @Accept mpfd
+// @Produce json
+// @Param transactions_file formData string true "The transaction file with extension .csv"
+// @Success 200 {string} string "message"
+// @Failure 500 {object} errorResponse
+// @Failure 400 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/v1/transactions/upload [post]
 func (h *Handler) uploadTransactions(c *gin.Context) {
 	transactions := []test_task.Transaction{}
 
@@ -28,7 +39,7 @@ func (h *Handler) uploadTransactions(c *gin.Context) {
 	}
 
 	if err := gocsv.Unmarshal(transactions_file, &transactions); err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -46,6 +57,26 @@ func (h *Handler) uploadTransactions(c *gin.Context) {
 	})
 }
 
+
+// @Summary Get transactions by filter
+// @Tags Transactions
+// @Description Filter Transactions by some parameter.
+// @ID getTransactions
+// @Accept mpfd
+// @Produce json
+// @Param transaction_id 	query int    false "Search transaction by transaction_id"
+// @Param terminal_id    	query int    false "Search transactions by terminal_id (you can use it multiple)"
+// @Param status         	query string false "Search transactions by status"
+// @Param payment_type   	query string false "Search transactions by payment_type"
+// @Param from   		 	query string false "Search transactions by period (from date to date), use only with to"
+// @Param to  		     	query string false "Search transactions by period (from date to date) use only with from"
+// @Param payment_narrative query string false "Search transactions by payment_narrative"
+// @Success 200 {object} test_task.Transaction
+// @Success 200 {array} test_task.Transaction
+// @Failure 500 {object} errorResponse
+// @Failure 400 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/v1/transactions/ [get]
 func (h *Handler) getTransactions(c *gin.Context) { // filtering handler
 	transactionIdParam, ok := c.GetQuery("transaction_id")
 	if ok {

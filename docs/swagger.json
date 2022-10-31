@@ -1,0 +1,231 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API server for CSV Application",
+        "title": "CSVLoader App API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "docker_host:8000",
+    "basePath": "/",
+    "paths": {
+        "/api/v1/transactions/": {
+            "get": {
+                "description": "Filter Transactions by some parameter.",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Get transactions by filter",
+                "operationId": "getTransactions",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Search transaction by transaction_id",
+                        "name": "transaction_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Search transactions by terminal_id (you can use it multiple)",
+                        "name": "terminal_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search transactions by status",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search transactions by payment_type",
+                        "name": "payment_type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search transactions by period (from date to date), use only with to",
+                        "name": "from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search transactions by period (from date to date) use only with from",
+                        "name": "to",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search transactions by payment_narrative",
+                        "name": "payment_narrative",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/test_task.Transaction"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/transactions/upload": {
+            "post": {
+                "description": "Upload Transactions file to save to db.",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Upload Transactions",
+                "operationId": "uploadTransactions",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The transaction file with extension .csv",
+                        "name": "transactions_file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "message",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "handler.errorResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "test_task.Transaction": {
+            "type": "object",
+            "properties": {
+                "amountOriginal": {
+                    "type": "integer"
+                },
+                "amountTotal": {
+                    "type": "integer"
+                },
+                "commissionClient": {
+                    "type": "number"
+                },
+                "commissionPS": {
+                    "type": "number"
+                },
+                "commissionProvider": {
+                    "type": "number"
+                },
+                "dateInput": {
+                    "type": "string"
+                },
+                "datePost": {
+                    "type": "string"
+                },
+                "partnerObjectid": {
+                    "type": "integer"
+                },
+                "payeeBankAccount": {
+                    "type": "string"
+                },
+                "payeeBankMfo": {
+                    "type": "integer"
+                },
+                "payeeName": {
+                    "type": "string"
+                },
+                "payeeid": {
+                    "type": "integer"
+                },
+                "paymentNarrative": {
+                    "type": "string"
+                },
+                "paymentNumber": {
+                    "type": "string"
+                },
+                "paymentType": {
+                    "type": "string"
+                },
+                "requestid": {
+                    "type": "integer"
+                },
+                "service": {
+                    "type": "string"
+                },
+                "serviceid": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "terminalid": {
+                    "type": "integer"
+                },
+                "transactionid": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}

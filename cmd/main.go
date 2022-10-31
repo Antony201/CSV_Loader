@@ -1,6 +1,11 @@
 package main
 
 import (
+	loader "github.com/Antony201/CsvLoader"
+	"github.com/Antony201/CsvLoader/pkg/handler"
+	"github.com/Antony201/CsvLoader/pkg/repository"
+	"github.com/Antony201/CsvLoader/pkg/service"
+	"io"
 	"os"
 	"os/signal"
 	"syscall"
@@ -10,23 +15,30 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-
-	"test_task"
-	"test_task/pkg/handler"
-	"test_task/pkg/repository"
-	"test_task/pkg/service"
 )
 
 // @title CSVLoader App API
 // @version 1.0
 // @description API server for CSV Application
 
-// @host localhost:8000
+// @host docker_host:8000
 // @BasePath /
 
-
-func main() {
+func initLogger() {
 	logrus.SetFormatter(new(logrus.JSONFormatter))
+	logFile := "/logs/api.log"
+
+	file, err := os.OpenFile(logFile, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+	if err != nil {
+		logrus.Fatal(err)
+	}
+
+	mw := io.MultiWriter(os.Stdout, file)
+	logrus.SetOutput(mw)
+}
+func main() {
+	initLogger()
+
 	if err := initConfig(); err != nil {
 		logrus.Fatalf("error initializing configs: %s", err.Error())
 	}
@@ -52,7 +64,7 @@ func main() {
 	services := service.NewService(repos)
 	handlers := handler.NewHandler(services)
 
-	srv := new(test_task.Server)
+	srv := new(loader.Server)
 	go func() {
 		if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
 			logrus.Fatalf("error occured while running http server: %s", err.Error())

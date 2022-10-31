@@ -2,17 +2,17 @@ package repository
 
 import (
 	"github.com/jmoiron/sqlx"
-	"test_task"
+	loader "github.com/Antony201/CsvLoader"
 )
 
 type Transaction interface {
-	Create(transaction test_task.Transaction) (int, error)
-	GetById(transactionId int) (test_task.Transaction, error)
-	GetByTerminalId(terminalId int) (test_task.Transaction, error)
-	GetByStatus(statusParam string) ([]test_task.Transaction, error)
-	GetByPaymentType(paymentTypeParam string) ([]test_task.Transaction, error)
-	GetByDatePeriod(fromDateParam, toDateParam string) ([]test_task.Transaction, error)
-	GetByPaymentNarrative(paymentNarrativeParam string) ([]test_task.Transaction, error)
+	Create(transaction loader.Transaction) (int, error)
+	GetById(transactionId int) (loader.Transaction, error)
+	GetByTerminalId(terminalId int) (loader.Transaction, error)
+	GetByStatus(statusParam string) ([]loader.Transaction, error)
+	GetByPaymentType(paymentTypeParam string) ([]loader.Transaction, error)
+	GetByDatePeriod(fromDateParam, toDateParam string) ([]loader.Transaction, error)
+	GetByPaymentNarrative(paymentNarrativeParam string) ([]loader.Transaction, error)
 }
 
 type Repository struct {

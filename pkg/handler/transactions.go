@@ -2,11 +2,11 @@ package handler
 
 import (
 	"fmt"
+	loader "github.com/Antony201/CsvLoader"
 	"github.com/gin-gonic/gin"
 	"github.com/gocarina/gocsv"
 	"net/http"
 	"strconv"
-	"test_task"
 )
 
 
@@ -24,7 +24,7 @@ import (
 // @Failure default {object} errorResponse
 // @Router /api/v1/transactions/upload [post]
 func (h *Handler) uploadTransactions(c *gin.Context) {
-	transactions := []test_task.Transaction{}
+	transactions := []loader.Transaction{}
 
 	uploadedFile, err := c.FormFile("transactions_file")
 	if err != nil {
@@ -71,8 +71,8 @@ func (h *Handler) uploadTransactions(c *gin.Context) {
 // @Param from   		 	query string false "Search transactions by period (from date to date), use only with to"
 // @Param to  		     	query string false "Search transactions by period (from date to date) use only with from"
 // @Param payment_narrative query string false "Search transactions by payment_narrative"
-// @Success 200 {object} test_task.Transaction
-// @Success 200 {array} test_task.Transaction
+// @Success 200 {object} loader.Transaction
+// @Success 200 {array} loader.Transaction
 // @Failure 500 {object} errorResponse
 // @Failure 400 {object} errorResponse
 // @Failure default {object} errorResponse

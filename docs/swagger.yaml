@@ -50,7 +50,7 @@ definitions:
       transactionid:
         type: integer
     type: object
-host: localhost:8000
+host: docker_host:8000
 info:
   contact: {}
   description: API server for CSV Application

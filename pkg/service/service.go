@@ -1,20 +1,20 @@
 package service
 
 import (
-	"test_task"
-	"test_task/pkg/repository"
+	loader "github.com/Antony201/CsvLoader"
+	"github.com/Antony201/CsvLoader/pkg/repository"
 )
 
 
 type Transactions interface {
-	Create(transactions []test_task.Transaction) (int, error)
+	Create(transactions []loader.Transaction) (int, error)
 
-	GetByTransactionId(transactionId int) (test_task.Transaction, error)
-	GetByTerminalIds(terminalIdParams []int) ([]test_task.Transaction, error)
-	GetByStatus(statusParam string) ([]test_task.Transaction, error)
-	GetByPaymentType(paymentTypeParam string) ([]test_task.Transaction, error)
-	GetByDatePeriod(fromDateParam, toDateParam string) ([]test_task.Transaction, error)
-	GetByPaymentNarrative(paymentNarrativeParam string) ([]test_task.Transaction, error)
+	GetByTransactionId(transactionId int) (loader.Transaction, error)
+	GetByTerminalIds(terminalIdParams []int) ([]loader.Transaction, error)
+	GetByStatus(statusParam string) ([]loader.Transaction, error)
+	GetByPaymentType(paymentTypeParam string) ([]loader.Transaction, error)
+	GetByDatePeriod(fromDateParam, toDateParam string) ([]loader.Transaction, error)
+	GetByPaymentNarrative(paymentNarrativeParam string) ([]loader.Transaction, error)
 }
 
 

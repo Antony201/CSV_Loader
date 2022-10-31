@@ -3,7 +3,7 @@ package repository
 import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
-	"test_task"
+	loader "github.com/Antony201/CsvLoader"
 )
 
 type TransactionPostgres struct {
@@ -17,7 +17,7 @@ func NewTransaction(db *sqlx.DB) *TransactionPostgres {
 	}
 }
 
-func (r *TransactionPostgres) Create(transaction test_task.Transaction) (int, error) {
+func (r *TransactionPostgres) Create(transaction loader.Transaction) (int, error) {
 	var transactionId int
 
 	createTransactionQuery := fmt.Sprintf("INSERT INTO %s (transaction_id, " +
@@ -40,8 +40,8 @@ func (r *TransactionPostgres) Create(transaction test_task.Transaction) (int, er
 	return transactionId, nil
 }
 
-func (r *TransactionPostgres) GetById(transactionId int) (test_task.Transaction, error) {
-	var transaction test_task.Transaction
+func (r *TransactionPostgres) GetById(transactionId int) (loader.Transaction, error) {
+	var transaction loader.Transaction
 
 	query := fmt.Sprintf("SELECT transaction_id, request_id, terminal_id, partner_object_id, " +
 		"amount_total, amount_original, commision_ps, commission_client, commission_provider, date_input, " +
@@ -54,8 +54,8 @@ func (r *TransactionPostgres) GetById(transactionId int) (test_task.Transaction,
 	return transaction, err
 }
 
-func (r *TransactionPostgres) GetByTerminalId(terminalId int) (test_task.Transaction, error) {
-	var transaction test_task.Transaction
+func (r *TransactionPostgres) GetByTerminalId(terminalId int) (loader.Transaction, error) {
+	var transaction loader.Transaction
 
 	query := fmt.Sprintf("SELECT transaction_id, request_id, terminal_id, partner_object_id, " +
 		"amount_total, amount_original, commision_ps, commission_client, commission_provider, date_input, " +
@@ -68,8 +68,8 @@ func (r *TransactionPostgres) GetByTerminalId(terminalId int) (test_task.Transac
 	return transaction, err
 }
 
-func (r *TransactionPostgres) GetByStatus(statusParam string) ([]test_task.Transaction, error) {
-	var transactionList []test_task.Transaction
+func (r *TransactionPostgres) GetByStatus(statusParam string) ([]loader.Transaction, error) {
+	var transactionList []loader.Transaction
 	query := fmt.Sprintf("SELECT transaction_id, request_id, terminal_id, partner_object_id, " +
 		"amount_total, amount_original, commision_ps, commission_client, commission_provider, date_input, " +
 		"date_post, status, payment_type, payment_number, service_id, service, payee_id, payee_name, " +
@@ -81,8 +81,8 @@ func (r *TransactionPostgres) GetByStatus(statusParam string) ([]test_task.Trans
 	return transactionList, err
 }
 
-func (r *TransactionPostgres) GetByPaymentType(paymentTypeParam string) ([]test_task.Transaction, error) {
-	var transactionList []test_task.Transaction
+func (r *TransactionPostgres) GetByPaymentType(paymentTypeParam string) ([]loader.Transaction, error) {
+	var transactionList []loader.Transaction
 	query := fmt.Sprintf("SELECT transaction_id, request_id, terminal_id, partner_object_id, " +
 		"amount_total, amount_original, commision_ps, commission_client, commission_provider, date_input, " +
 		"date_post, status, payment_type, payment_number, service_id, service, payee_id, payee_name, " +
@@ -94,8 +94,8 @@ func (r *TransactionPostgres) GetByPaymentType(paymentTypeParam string) ([]test_
 	return transactionList, err
 }
 
-func (r *TransactionPostgres) GetByDatePeriod(fromDateParam, toDateParam string) ([]test_task.Transaction, error) {
-	var transactionList []test_task.Transaction
+func (r *TransactionPostgres) GetByDatePeriod(fromDateParam, toDateParam string) ([]loader.Transaction, error) {
+	var transactionList []loader.Transaction
 	query := fmt.Sprintf("SELECT transaction_id, request_id, terminal_id, partner_object_id, " +
 		"amount_total, amount_original, commision_ps, commission_client, commission_provider, date_input, " +
 		"date_post, status, payment_type, payment_number, service_id, service, payee_id, payee_name, " +
@@ -108,8 +108,8 @@ func (r *TransactionPostgres) GetByDatePeriod(fromDateParam, toDateParam string)
 	return transactionList, err
 }
 
-func (r *TransactionPostgres) GetByPaymentNarrative(paymentNarrativeParam string) ([]test_task.Transaction, error) {
-	var transactionList []test_task.Transaction
+func (r *TransactionPostgres) GetByPaymentNarrative(paymentNarrativeParam string) ([]loader.Transaction, error) {
+	var transactionList []loader.Transaction
 	query := fmt.Sprintf("SELECT transaction_id, request_id, terminal_id, partner_object_id, " +
 		"amount_total, amount_original, commision_ps, commission_client, commission_provider, date_input, " +
 		"date_post, status, payment_type, payment_number, service_id, service, payee_id, payee_name, " +

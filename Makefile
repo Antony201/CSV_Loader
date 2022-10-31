@@ -8,6 +8,9 @@ build:
 run:
 	docker-compose -f docker-compose.yml up -d csvloader
 
+test:
+	go test ./... -coverprofile cover.out
+
 stop:
 	docker-compose -f docker-compose.yml down
 

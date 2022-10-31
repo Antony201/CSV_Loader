@@ -93,6 +93,7 @@ func (h *Handler) getTransactions(c *gin.Context) { // filtering handler
 		}
 
 		c.JSON(http.StatusOK, transaction)
+		return
 	}
 
 	terminalIdQueryParams, ok := c.GetQueryArray("terminal_id")
@@ -103,7 +104,7 @@ func (h *Handler) getTransactions(c *gin.Context) { // filtering handler
 			terminalId, err := strconv.Atoi(terminalId)
 			if err != nil {
 				newErrorResponse(c, http.StatusInternalServerError,
-					"TransactionId should be the number.")
+					"TerminalId should be the number.")
 				return
 			}
 
@@ -117,6 +118,7 @@ func (h *Handler) getTransactions(c *gin.Context) { // filtering handler
 		}
 
 		c.JSON(http.StatusOK, transactions)
+		return
 	}
 
 	statusParam, ok := c.GetQuery("status")
@@ -128,6 +130,7 @@ func (h *Handler) getTransactions(c *gin.Context) { // filtering handler
 		}
 
 		c.JSON(http.StatusOK, transactions)
+		return
 	}
 
 	paymentTypeParam, ok := c.GetQuery("payment_type")
@@ -139,6 +142,7 @@ func (h *Handler) getTransactions(c *gin.Context) { // filtering handler
 		}
 
 		c.JSON(http.StatusOK, transactions)
+		return
 	}
 
 
@@ -153,6 +157,7 @@ func (h *Handler) getTransactions(c *gin.Context) { // filtering handler
 		}
 
 		c.JSON(http.StatusOK, transactions)
+		return
 	}
 
 	paymentNarrativeParam, ok := c.GetQuery("payment_narrative")
@@ -164,5 +169,8 @@ func (h *Handler) getTransactions(c *gin.Context) { // filtering handler
 		}
 
 		c.JSON(http.StatusOK, transactions)
+		return
 	}
+
+	c.JSON(http.StatusOK, loader.Transaction{})
 }

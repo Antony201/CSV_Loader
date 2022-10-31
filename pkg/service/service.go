@@ -5,6 +5,7 @@ import (
 	"github.com/Antony201/CsvLoader/pkg/repository"
 )
 
+//go:generate mockgen -source=service.go -destination=mocks/mock.go
 
 type Transactions interface {
 	Create(transactions []loader.Transaction) (int, error)

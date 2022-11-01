@@ -3,6 +3,8 @@ package service
 import (
 	loader "github.com/Antony201/CsvLoader"
 	"github.com/Antony201/CsvLoader/pkg/repository"
+	"github.com/gocarina/gocsv"
+	"mime/multipart"
 )
 
 type TransactionsService struct {
@@ -13,17 +15,27 @@ func NewTransactionsService(repo repository.Transaction) *TransactionsService {
 	return &TransactionsService{repo: repo}
 }
 
-func (s *TransactionsService) Create(transactions []loader.Transaction) (int, error) {
+func (s *TransactionsService) LoadFileToDb(file multipart.File) {
+	// create chan for file chunks
+	chunks_chan := make(chan loader.Transaction)
 
-	for _, transaction := range transactions {
-		_, err := s.repo.Create(transaction) // creating transaction in db
+	go func() {
+		err := gocsv.UnmarshalToChan(file, chunks_chan)
+		if err != nil {
+			return
+		}
+	}()
+
+
+	for transaction := range chunks_chan {
+		_, err := s.repo.Create(transaction)
 
 		if err != nil {
-			return 0, err
+			return
 		}
 	}
 
-	return len(transactions), nil
+	defer file.Close()
 }
 
 func (s *TransactionsService) GetByTransactionId(transactionId int) (loader.Transaction, error) {

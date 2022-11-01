@@ -3,12 +3,13 @@ package service
 import (
 	loader "github.com/Antony201/CsvLoader"
 	"github.com/Antony201/CsvLoader/pkg/repository"
+	"mime/multipart"
 )
 
 //go:generate mockgen -source=service.go -destination=mocks/mock.go
 
 type Transactions interface {
-	Create(transactions []loader.Transaction) (int, error)
+	LoadFileToDb(file multipart.File)
 
 	GetByTransactionId(transactionId int) (loader.Transaction, error)
 	GetByTerminalIds(terminalIdParams []int) ([]loader.Transaction, error)

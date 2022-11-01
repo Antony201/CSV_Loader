@@ -4,11 +4,9 @@ import (
 	"fmt"
 	loader "github.com/Antony201/CsvLoader"
 	"github.com/gin-gonic/gin"
-	"github.com/gocarina/gocsv"
 	"net/http"
 	"strconv"
 )
-
 
 
 // @Summary Upload Transactions
@@ -20,12 +18,9 @@ import (
 // @Param transactions_file formData string true "The transaction file with extension .csv"
 // @Success 200 {string} string "message"
 // @Failure 500 {object} errorResponse
-// @Failure 400 {object} errorResponse
 // @Failure default {object} errorResponse
 // @Router /api/v1/transactions/upload [post]
 func (h *Handler) uploadTransactions(c *gin.Context) {
-	transactions := []loader.Transaction{}
-
 	uploadedFile, err := c.FormFile("transactions_file")
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -38,25 +33,13 @@ func (h *Handler) uploadTransactions(c *gin.Context) {
 		return
 	}
 
-	if err := gocsv.Unmarshal(transactions_file, &transactions); err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
-		return
-	}
-
-	defer transactions_file.Close()
-
-
-	rows, err := h.services.Transactions.Create(transactions)
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
+	go h.services.Transactions.LoadFileToDb(transactions_file)
 
 	c.JSON(http.StatusOK, map[string]interface{}{
-		"message": fmt.Sprintf("File was uploaded and data is saved in db! (%d rows)", rows),
+		"message": fmt.Sprintf("Thanks, i am saving the data now."),
 	})
-}
 
+}
 
 // @Summary Get transactions by filter
 // @Tags Transactions

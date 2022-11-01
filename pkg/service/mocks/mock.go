@@ -5,9 +5,10 @@
 package mock_service
 
 import (
+	multipart "mime/multipart"
 	reflect "reflect"
 
-	CsvLoader "github.com/Antony201/CsvLoader"
+	test_task "github.com/Antony201/CsvLoader"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -34,26 +35,11 @@ func (m *MockTransactions) EXPECT() *MockTransactionsMockRecorder {
 	return m.recorder
 }
 
-// Create mocks base method.
-func (m *MockTransactions) Create(transactions []CsvLoader.Transaction) (int, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Create", transactions)
-	ret0, _ := ret[0].(int)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// Create indicates an expected call of Create.
-func (mr *MockTransactionsMockRecorder) Create(transactions interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockTransactions)(nil).Create), transactions)
-}
-
 // GetByDatePeriod mocks base method.
-func (m *MockTransactions) GetByDatePeriod(fromDateParam, toDateParam string) ([]CsvLoader.Transaction, error) {
+func (m *MockTransactions) GetByDatePeriod(fromDateParam, toDateParam string) ([]test_task.Transaction, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetByDatePeriod", fromDateParam, toDateParam)
-	ret0, _ := ret[0].([]CsvLoader.Transaction)
+	ret0, _ := ret[0].([]test_task.Transaction)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -65,10 +51,10 @@ func (mr *MockTransactionsMockRecorder) GetByDatePeriod(fromDateParam, toDatePar
 }
 
 // GetByPaymentNarrative mocks base method.
-func (m *MockTransactions) GetByPaymentNarrative(paymentNarrativeParam string) ([]CsvLoader.Transaction, error) {
+func (m *MockTransactions) GetByPaymentNarrative(paymentNarrativeParam string) ([]test_task.Transaction, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetByPaymentNarrative", paymentNarrativeParam)
-	ret0, _ := ret[0].([]CsvLoader.Transaction)
+	ret0, _ := ret[0].([]test_task.Transaction)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -80,10 +66,10 @@ func (mr *MockTransactionsMockRecorder) GetByPaymentNarrative(paymentNarrativePa
 }
 
 // GetByPaymentType mocks base method.
-func (m *MockTransactions) GetByPaymentType(paymentTypeParam string) ([]CsvLoader.Transaction, error) {
+func (m *MockTransactions) GetByPaymentType(paymentTypeParam string) ([]test_task.Transaction, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetByPaymentType", paymentTypeParam)
-	ret0, _ := ret[0].([]CsvLoader.Transaction)
+	ret0, _ := ret[0].([]test_task.Transaction)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -95,10 +81,10 @@ func (mr *MockTransactionsMockRecorder) GetByPaymentType(paymentTypeParam interf
 }
 
 // GetByStatus mocks base method.
-func (m *MockTransactions) GetByStatus(statusParam string) ([]CsvLoader.Transaction, error) {
+func (m *MockTransactions) GetByStatus(statusParam string) ([]test_task.Transaction, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetByStatus", statusParam)
-	ret0, _ := ret[0].([]CsvLoader.Transaction)
+	ret0, _ := ret[0].([]test_task.Transaction)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -110,10 +96,10 @@ func (mr *MockTransactionsMockRecorder) GetByStatus(statusParam interface{}) *go
 }
 
 // GetByTerminalIds mocks base method.
-func (m *MockTransactions) GetByTerminalIds(terminalIdParams []int) ([]CsvLoader.Transaction, error) {
+func (m *MockTransactions) GetByTerminalIds(terminalIdParams []int) ([]test_task.Transaction, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetByTerminalIds", terminalIdParams)
-	ret0, _ := ret[0].([]CsvLoader.Transaction)
+	ret0, _ := ret[0].([]test_task.Transaction)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -125,10 +111,10 @@ func (mr *MockTransactionsMockRecorder) GetByTerminalIds(terminalIdParams interf
 }
 
 // GetByTransactionId mocks base method.
-func (m *MockTransactions) GetByTransactionId(transactionId int) (CsvLoader.Transaction, error) {
+func (m *MockTransactions) GetByTransactionId(transactionId int) (test_task.Transaction, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetByTransactionId", transactionId)
-	ret0, _ := ret[0].(CsvLoader.Transaction)
+	ret0, _ := ret[0].(test_task.Transaction)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -137,4 +123,16 @@ func (m *MockTransactions) GetByTransactionId(transactionId int) (CsvLoader.Tran
 func (mr *MockTransactionsMockRecorder) GetByTransactionId(transactionId interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByTransactionId", reflect.TypeOf((*MockTransactions)(nil).GetByTransactionId), transactionId)
+}
+
+// LoadFileToDb mocks base method.
+func (m *MockTransactions) LoadFileToDb(file multipart.File) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "LoadFileToDb", file)
+}
+
+// LoadFileToDb indicates an expected call of LoadFileToDb.
+func (mr *MockTransactionsMockRecorder) LoadFileToDb(file interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "LoadFileToDb", reflect.TypeOf((*MockTransactions)(nil).LoadFileToDb), file)
 }

@@ -1,4 +1,4 @@
-# Csv Loader App
+# 🔥 Csv Loader App
 
 The api for csv loader (uploading csv to save to db and filters to search file data in db)
 
@@ -9,7 +9,7 @@ The api for csv loader (uploading csv to save to db and filters to search file d
 
 ## Build and run
 
-1. Create .env file in project folder and set variables like in .default.env (DB_PASSWORD, DATABASE_URL)
+1. Create .env file in project folder and set variables like in .default.env (DB_PASSWORD, POSTGRES_PASSWORD, DATABASE_URL)
 2. Build project
 > make build
 
@@ -21,7 +21,7 @@ The api for csv loader (uploading csv to save to db and filters to search file d
 
 ## Api Description
 
-Api is deskcribed in swagger docs by url 
+Api is described in swagger docs by url 
 > hostname:8000/swagger/index.html
 
 ## Testing
@@ -36,10 +36,12 @@ To up migrations use:
 To dawn:
 > make migrate-down
 
-### Goals:
+### Goals for future:
 
 - Increase test covering to 80-100%
 - Optimize project structure
+- Create saving status link for user.
+- Optimize speed of saving the data in db
 
 ---
 

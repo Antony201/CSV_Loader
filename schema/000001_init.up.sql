@@ -22,4 +22,7 @@ CREATE TABLE transactions
     payee_bank_mfo      int not null unique,
     payee_bank_account  varchar(29) not null,
     payment_narrative   varchar(125) not null
-)
+);
+
+CREATE INDEX transactions_idx
+    ON transactions(transaction_id, terminal_id);
